@@ -1,4 +1,5 @@
 let currentUsername = '';
+let refreshInterval;
 
 function createLink() {
     const username = document.getElementById('username').value.trim();
@@ -21,6 +22,7 @@ function createLink() {
     document.getElementById('messagesSection').style.display = 'block';
     
     loadMessages();
+    startAutoRefresh();
 }
 
 function copyLink() {
@@ -88,4 +90,20 @@ function formatTime(timestamp) {
     if (diffDays < 7) return `${diffDays}d ago`;
     
     return date.toLocaleDateString();
+}
+
+function startAutoRefresh() {
+    if (refreshInterval) clearInterval(refreshInterval);
+    refreshInterval = setInterval(() => {
+        if (currentUsername) {
+            loadMessages();
+        }
+    }, 10000);
+}
+
+function stopAutoRefresh() {
+    if (refreshInterval) {
+        clearInterval(refreshInterval);
+        refreshInterval = null;
+    }
 }
