@@ -5,11 +5,11 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Use in-memory storage for Vercel (serverless)
 let messagesData = {};
@@ -44,6 +44,11 @@ app.post('/api/send', (req, res) => {
 // Get share link
 app.get('/u/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'send.html'));
+});
+
+// Serve index.html for root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
