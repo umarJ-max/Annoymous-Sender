@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Anonymous Message</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📩 Send Anonymous Message</h1>
+        <p id="recipientName">Send an anonymous message</p>
+        
+        <div class="message-form">
+            <textarea id="messageText" placeholder="Type your anonymous message here..." maxlength="500"></textarea>
+            <div class="char-count">
+                <span id="charCount">0</span>/500
+            </div>
+            <button onclick="sendMessage()">Send Anonymous Message</button>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div class="footer">
+            <a href="/">Create your own link</a>
+            <p style="margin-top: 15px;">Developed with ❤️ by <a href="#" class="developer">Umar J</a></p>
+        </div>
+    </div>
+    
+    <script>
+        const username = window.location.pathname.split('/u/')[1];
+        if (username) {
+            document.getElementById('recipientName').textContent = `Send an anonymous message to @${username}`;
+        }
+        
+        const messageText = document.getElementById('messageText');
+        const charCount = document.getElementById('charCount');
+        
+        messageText.addEventListener('input', () => {
+            charCount.textContent = messageText.value.length;
+        });
+        
+        async function sendMessage() {
+            const message = messageText.value.trim();
+            if (!message) {
+                showStatus('Please enter a message', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ to: username, message })
+                });
+                
+                if (response.ok) {
+                    showStatus('Message sent successfully! 🎉', 'success');
+                    messageText.value = '';
+                    charCount.textContent = '0';
+                } else {
+                    showStatus('Failed to send message', 'error');
+                }
+            } catch (error) {
+                showStatus('Error sending message', 'error');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            setTimeout(() => status.textContent = '', 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Messages</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📩 Anonymous Messages</h1>
+        <p>Get anonymous messages from your friends</p>
+        
+        <div class="input-section">
+            <input type="text" id="username" placeholder="Enter your username" maxlength="20">
+            <button onclick="createLink()">Create My Link</button>
+        </div>
+        
+        <div id="linkSection" class="link-section" style="display: none;">
+            <h3>Your Link:</h3>
+            <div class="link-container">
+                <input type="text" id="shareLink" readonly>
+                <button onclick="copyLink()">Copy</button>
+            </div>
+            <p>Share this link to receive anonymous messages!</p>
+        </div>
+        
+        <div id="messagesSection" class="messages-section" style="display: none;">
+            <h3>Your Messages:</h3>
+            <div id="messagesList"></div>
+            <button onclick="refreshMessages()">Refresh</button>
+        </div>
+        
+        <div class="footer">
+            <p>Developed with ❤️ by <a href="#" class="developer">Umar J</a></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
